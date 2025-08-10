@@ -26,17 +26,25 @@ struct AppStaticProperties {
     
     private func loadPlist() -> [String: String]? {
         // plist 파일 가져오기 & 파싱
-        guard let plistPath = Bundle.main.url(forResource: plistName, withExtension: "plist"),
-              let plistData = try? Data(contentsOf: plistPath),
-              let plist = try? PropertyListSerialization.propertyList(
-                from: plistData,
-                options: .mutableContainersAndLeaves,
-                format: nil
-              ) as? [[String: String]] else {
-            logger.error("cannot load plist: \(plistName).plist")
+        guard let plistPath = Bundle.main.url(forResource: plistName, withExtension: "plist") else {
+            logger.error("cannot get plist: \(plistName).plist")
             return nil
         }
         
-        return plist.first
+        guard let plistData = try? Data(contentsOf: plistPath) else {
+            logger.error("cannot get plist data")
+            return nil
+        }
+        
+        guard let plist = try? PropertyListSerialization.propertyList(
+            from: plistData,
+            options: .mutableContainersAndLeaves,
+            format: nil
+        ) as? [String: String] else {
+            logger.error("cannot parse plist data")
+            return nil
+        }
+        
+        return plist
     }
 }
