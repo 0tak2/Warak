@@ -12,13 +12,20 @@ struct ContentView: View {
     @State private var navigationModel = NavigationModel()
     @State private var showNotAuthorizedAlert: Bool = false
     
+    private struct Constants {
+        static let padding: CGFloat = 16
+    }
+    
     var body: some View {
         NavigationStack(path: $navigationModel.paths) {
             NoteListView(navigationModel: $navigationModel)
                 .navigationDestination(for: NavigationItem.self) { path in
                     switch path {
                     case .record:
-                        RecordNoteView()
+                        RecordNoteView(navigationModel: $navigationModel)
+                            .padding(Constants.padding)
+                    case .detail(let noteID):
+                        DetailNoteView(noteID: noteID)
                     }
                 }
         }

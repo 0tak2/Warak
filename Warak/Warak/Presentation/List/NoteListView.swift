@@ -17,9 +17,9 @@ struct NoteListView: View {
         List {
             ForEach(items) { item in
                 NavigationLink {
-                    Text("Item at \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                    Text(item.title ?? getPartialString(item.content))
                 } label: {
-                    Text(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))
+                    Text(item.title ?? getPartialString(item.content))
                 }
             }
             .onDelete(perform: deleteItems)
@@ -53,21 +53,18 @@ extension NoteListView {
             }
         }
     }
+    
+    private func getPartialString(_ original: String) -> String {
+        let maxStringLength: Int = 10
+        
+        if original.count < maxStringLength {
+            return original
+        }
+        
+        return String(original[original.startIndex..<original.index(original.startIndex, offsetBy: 10)])
+    }
 }
 
-#Preview {
-    func setTestData(modelContainer: ModelContainer) {
-        Task { @MainActor in
-            modelContainer.mainContext.insert(Note(content: "테스트 1"))
-            modelContainer.mainContext.insert(Note(content: "테스트 2"))
-            modelContainer.mainContext.insert(Note(content: "테스트 3"))
-        }
-    }
-    
-    let modelContainer = try! ModelContainer(for: Note.self, configurations: .init(isStoredInMemoryOnly: true))
-    
-    setTestData(modelContainer: modelContainer)
-    
+#Preview(traits: .sampleData) {
     return ContentView()
-        .modelContainer(modelContainer)
 }

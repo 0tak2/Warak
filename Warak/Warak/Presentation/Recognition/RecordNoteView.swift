@@ -60,6 +60,7 @@ struct RecordNoteView: View {
         }
         .alert("저장할까요?", isPresented: $showConfirmAlert) {
             Button("저장") {
+                saveButtonTapped()
             }
             Button("다시 녹음하기") { }
         }
@@ -89,6 +90,25 @@ extension RecordNoteView {
         }
         
         speechRecognitionModel.triggerButtonTapped()
+    }
+    
+    func saveButtonTapped() {
+        saveNote()
+        navigationModel.pop()
+    }
+}
+
+// MARK: Mutate Data
+extension RecordNoteView {
+    func saveNote() {
+        let newNote = Note(content: speechRecognitionModel.recognizedText)
+        modelContext.insert(newNote)
+    
+        do {
+            try modelContext.save()
+        } catch {
+            logger.error("failed to save note: \(error)")
+        }
     }
 }
 

@@ -9,4 +9,5 @@ import Foundation
 
 enum NavigationItem: Hashable {
     case record
+    case detail(UUID)
 }

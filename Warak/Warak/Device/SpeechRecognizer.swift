@@ -13,7 +13,7 @@ import os.log
 
 class SpeechRecognizer: NSObject {
     // MARK: Properties
-    private let speechRecognizer = SFSpeechRecognizer()!
+    private var speechRecognizer: SFSpeechRecognizer?
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
@@ -26,15 +26,20 @@ class SpeechRecognizer: NSObject {
     let errorSubject: PassthroughSubject<SpeechRecognizerError, Never> = .init()
     
     override init() {
-        super.init()
-        speechRecognizer.delegate = self
     }
     
     var isAuthorized: Bool {
         SFSpeechRecognizer.authorizationStatus() == .authorized
     }
     
-    func startRecording() {
+    func startRecording(languageCode: String? = nil) {
+        // Recognizer 생성
+        speechRecognizer = .init(locale: Locale(identifier: languageCode ?? "ko_KR"))
+        guard let speechRecognizer else {
+            errorSubject.send(.failedToCreateRecognizer)
+            return
+        }
+        
         // 이전 음성인식 태스크가 있다면 취소
         if let recognitionTask = recognitionTask {
             recognitionTask.cancel()
@@ -71,8 +76,16 @@ class SpeechRecognizer: NSObject {
             
             if error != nil {
                 isFinal = true
-                self?.errorSubject.send(.failedToRecognizeSpeech)
-                Logger.category("SpeechRecognizer").error("error recognizing speech: \(error)")
+                
+                if let error = error as? NSError,
+                   error.code != 301 && error.code != 1110 {
+                    // Skip some errors:
+                    // 301 Recognition request was canceled
+                    // 1110 No speech detected
+                    
+                    self?.errorSubject.send(.failedToRecognizeSpeech)
+                    Logger.category("SpeechRecognizer").error("error recognizing speech: \(error)")
+                }
             }
             
             // 완료 후 처리
@@ -166,6 +179,7 @@ enum SpeechRecognizerError: LocalizedError {
     case failedToSetAudioSession
     case failedToStartAudioEngine
     case failedToRecognizeSpeech
+    case failedToCreateRecognizer
     case internalError(String)
     
     var errorDescription: String? {
@@ -176,6 +190,8 @@ enum SpeechRecognizerError: LocalizedError {
             return "AudioEngine을 시작하는 데 실패했습니다."
         case .failedToRecognizeSpeech:
             return "음성 인식 중 오류가 발행했습니다."
+        case .failedToCreateRecognizer:
+            return "음성인식기를 생성하는 중 오류가 발생했습니다."
         case .internalError(let message):
             return "내부 에러입니다. \(message)"
         }
