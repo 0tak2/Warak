@@ -1,0 +1,13 @@
+//
+//  RequestAuthorizationResult.swift
+//  Warak
+//
+//  Created by 임영택 on 8/10/25.
+//
+
+import Foundation
+
+enum RequestAuthorizationResult {
+    case authorized
+    case notAuthorized(String)
+}

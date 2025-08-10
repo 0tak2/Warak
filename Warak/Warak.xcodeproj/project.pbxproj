@@ -29,9 +29,22 @@
 		3D80E81A2E4851A5002A21A0 /* WarakUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WarakUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3D80E8492E4867F5002A21A0 /* Exceptions for "Warak" folder in "Warak" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3D80E8002E4851A4002A21A0 /* Warak */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3D80E8032E4851A4002A21A0 /* Warak */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3D80E8492E4867F5002A21A0 /* Exceptions for "Warak" folder in "Warak" target */,
+			);
 			path = Warak;
 			sourceTree = "<group>";
 		};
@@ -400,6 +413,9 @@
 				DEVELOPMENT_TEAM = XS9UN8F2AX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Warak/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "빠른 영감 기록을 위해 마이크를 사용합니다.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "빠른 영감 기록을 위해 Speech 인식 기능을 사용합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -428,6 +444,9 @@
 				DEVELOPMENT_TEAM = XS9UN8F2AX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Warak/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "빠른 영감 기록을 위해 마이크를 사용합니다.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "빠른 영감 기록을 위해 Speech 인식 기능을 사용합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
