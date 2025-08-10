@@ -37,6 +37,13 @@
 			);
 			target = 3D80E8002E4851A4002A21A0 /* Warak */;
 		};
+		3D80E8692E48E94D002A21A0 /* Exceptions for "Warak" folder in "WarakTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				App/StaticProperties.plist,
+			);
+			target = 3D80E80F2E4851A5002A21A0 /* WarakTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -44,6 +51,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				3D80E8492E4867F5002A21A0 /* Exceptions for "Warak" folder in "Warak" target */,
+				3D80E8692E48E94D002A21A0 /* Exceptions for "Warak" folder in "WarakTests" target */,
 			);
 			path = Warak;
 			sourceTree = "<group>";

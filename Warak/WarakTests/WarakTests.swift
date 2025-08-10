@@ -11,9 +11,6 @@ import Testing
 
 struct WarakTests {
     @Test func testGeminiPrediction() async throws {
-        let environment = ProcessInfo.processInfo.environment
-        AppStaticProperties.shared.geminiApiKey = environment["GEMINI_API_KEY"]!
-        
         let geminiEndpoints = GeminiEndpoints()
         await #expect(throws: Never.self) {
             let geminiResponse = try await geminiEndpoints.requestPrediction(inputText: "명상은 나를 현재로 불러들이는 부드러운 손길이다. "
