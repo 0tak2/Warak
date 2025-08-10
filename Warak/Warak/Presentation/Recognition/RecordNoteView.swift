@@ -101,13 +101,45 @@ extension RecordNoteView {
 // MARK: Mutate Data
 extension RecordNoteView {
     func saveNote() {
-        let newNote = Note(content: speechRecognitionModel.recognizedText)
-        modelContext.insert(newNote)
+        Task {
+            let aiPrediction = await getAiPrediction(text: speechRecognitionModel.recognizedText)
+            
+            await MainActor.run {
+                let newNote = Note(
+                    title: aiPrediction?.title,
+                    content: speechRecognitionModel.recognizedText,
+                    tags: aiPrediction?.tags ?? []
+                )
+                modelContext.insert(newNote)
+            
+                do {
+                    try modelContext.save()
+                } catch {
+                    logger.error("failed to save note: \(error)")
+                }
+            }
+        }
+    }
     
+    func getAiPrediction(text: String) async -> ResponseDTO? {
+        let predictTask = Task {
+            do {
+                let endpoints = GeminiEndpoints() // TODO: should be injected from outside
+                let prediction = try await endpoints.requestPrediction(inputText: text)
+                return prediction
+            } catch {
+                logger.error("error getting prediction: \(error)")
+                throw error
+            }
+        }
+
+        let result = await predictTask.result
+
         do {
-            try modelContext.save()
+            let responseDTO = try result.get()
+            return try responseDTO.decodePrediction()
         } catch {
-            logger.error("failed to save note: \(error)")
+            return nil
         }
     }
 }
