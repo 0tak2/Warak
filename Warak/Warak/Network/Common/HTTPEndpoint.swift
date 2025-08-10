@@ -72,10 +72,12 @@ struct HTTPEndpoint<Body, Response> where Body: Encodable, Response: Decodable {
         
         if let urlReponse = urlResponse as? HTTPURLResponse {
             if (400..<500).contains(urlReponse.statusCode) {
+                logger.error("\(loggerPrefix)\n\(urlReponse.statusCode) Error")
                 throw HTTPEndpointError.badRequest
             }
             
             if (500..<600).contains(urlReponse.statusCode) {
+                logger.error("\(loggerPrefix)\n\(urlReponse.statusCode) Error")
                 throw HTTPEndpointError.internalServerError
             }
         }
