@@ -39,6 +39,11 @@ struct DetailNoteView: View {
         VStack {
             Text(note?.title ?? "...")
             Text(note?.content ?? "...")
+            HStack {
+                ForEach(note?.tags ?? [], id: \.self) { tag in
+                    Text(tag)
+                }
+            }
         }
         .alert("노트를 찾지 못했습니다", isPresented: $showingErrorAlert) {
             Button("확인") { }

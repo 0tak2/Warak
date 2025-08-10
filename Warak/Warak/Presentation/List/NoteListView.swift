@@ -16,10 +16,8 @@ struct NoteListView: View {
     var body: some View {
         List {
             ForEach(items) { item in
-                NavigationLink {
-                    Text(item.title ?? getPartialString(item.content))
-                } label: {
-                    Text(item.title ?? getPartialString(item.content))
+                Button(item.title ?? getPartialString(item.content)) {
+                    navigationModel.push(.detail(item.id))
                 }
             }
             .onDelete(perform: deleteItems)
