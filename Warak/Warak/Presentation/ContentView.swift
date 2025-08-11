@@ -26,6 +26,7 @@ struct ContentView: View {
                             .padding(Constants.padding)
                     case .detail(let noteID):
                         DetailNoteView(noteID: noteID)
+                            .padding(Constants.padding)
                     }
                 }
         }

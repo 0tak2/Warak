@@ -35,14 +35,50 @@ struct DetailNoteView: View {
         }
     }
     
+    private struct Constants {
+        static let largeSpacerHeight: CGFloat = 32
+        static let mediumSpacerHeight: CGFloat = 16
+        static let smallSpacerHeight: CGFloat = 4
+    }
+    
     var body: some View {
-        VStack {
-            Text(note?.title ?? "...")
-            Text(note?.content ?? "...")
-            HStack {
-                ForEach(note?.tags ?? [], id: \.self) { tag in
-                    Text(tag)
+        ScrollView {
+            VStack {
+                Text(note?.title ?? "...")
+                    .font(.largeTitle)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Spacer()
+                    .frame(height: Constants.largeSpacerHeight)
+                
+                Text(note?.content ?? "...")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Spacer()
+                    .frame(height: Constants.mediumSpacerHeight)
+                
+                HStack {
+                    ForEach(note?.tags ?? [], id: \.self) { tag in
+                        Text(tag)
+                            .font(.footnote)
+                    }
+                    
+                    Spacer()
                 }
+                
+                Spacer()
+                    .frame(height: Constants.mediumSpacerHeight)
+                
+                Text("\((note?.createdAt ?? Date()).localizedDescription) 작성")
+                    .font(.footnote)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Spacer()
+                    .frame(height: Constants.smallSpacerHeight)
+                
+                Text("\((note?.updatedAt ?? Date()).localizedDescription) 수정")
+                    .font(.footnote)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .alert("노트를 찾지 못했습니다", isPresented: $showingErrorAlert) {
@@ -52,5 +88,5 @@ struct DetailNoteView: View {
 }
 
 #Preview(traits: .sampleData) {
-    return DetailNoteView(noteID: UUID(uuidString: "22e8d807-d518-4b42-0000-26c24b3a06c0")!)
+    return DetailNoteView(noteID: UUID(uuidString: "22e8d807-d518-4b42-82d8-26c24b3a06c6")!)
 }
